@@ -13,7 +13,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { HttpExceptionFilter } from 'src/filters/HttpException.filter';
 import { Public } from 'src/modules/auth/guards/Public.guard';
 import { CreateUserDto } from '../../dto/CreateUser.dto';
@@ -43,8 +43,9 @@ export class UsersController {
     return user;
   }
 
+  @ApiBody({ type: CreateUserDto })
   @Public()
-  @Post('create')
+  @Post()
   @UsePipes(ValidationPipe)
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);

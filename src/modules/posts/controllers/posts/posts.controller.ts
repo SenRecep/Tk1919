@@ -15,7 +15,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { HttpExceptionFilter } from 'src/filters/HttpException.filter';
 import { UserListDto } from 'src/modules/users/dto/UserList.dto';
@@ -35,6 +35,8 @@ export class PostsController {
   getAll() {
     return this.postsService.getAllWhitoutDeleted();
   }
+  @ApiQuery({ name: 'take', type: Number, required: true })
+  @ApiQuery({ name: 'skip', type: Number, required: true })
   @Get('pager')
   async getAllPager(@Query() { take, skip }) {
     return await this.postsService.getAllPager(take, skip);
