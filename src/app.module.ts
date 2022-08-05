@@ -10,20 +10,26 @@ import { PostsModule } from './modules/posts/posts.module';
 import { getEnvPath } from './common/helper/env.helper';
 import { TypeOrmConfigService } from './shared/typeorm/typeorm.service';
 import { DataSource } from 'typeorm';
+import { TicketsModule } from './modules/tickets/tickets.module';
+import { AirFlightsModule } from './modules/air-flights/air-flights.module';
+import { PassengersModule } from './modules/passengers/passengers.module';
 
 const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
 
 @Module({
   imports: [
-    UsersModule,
     ConfigModule.forRoot({ envFilePath, isGlobal: true }),
     TypeOrmModule.forRootAsync({
       name: 'default',
       useClass: TypeOrmConfigService,
     }),
-    AuthModule,
     PassportModule.register({ session: true }),
+    AuthModule,
+    UsersModule,
     PostsModule,
+    TicketsModule,
+    AirFlightsModule,
+    PassengersModule,
   ],
   controllers: [],
   providers: [
