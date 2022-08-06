@@ -32,9 +32,11 @@ export class Passenger extends EntityBase {
   @Column({ name: 'isTurkish', nullable: false })
   isTurkish: boolean;
   @Column({ name: 'identityNumber', nullable: true, length: 11 })
-  identityNumber: string;
+  identityNumber?: string;
   @Column({ name: 'spp', nullable: true, length: 45 })
-  spp: string;
+  spp?: string;
+  @Column({ name: 'userId', nullable: false })
+  userId: number;
   @OneToMany(() => Ticket, (ticket) => ticket.passenger)
   tickets: Ticket[];
 }
