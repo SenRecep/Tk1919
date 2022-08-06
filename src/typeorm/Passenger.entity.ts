@@ -1,7 +1,7 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { EntityBase } from './EntityBase.entity';
 import { Ticket } from './Ticket.entity';
-
+import { User } from './User.entity';
 export enum Genger {
   Male,
   Female,
@@ -35,8 +35,11 @@ export class Passenger extends EntityBase {
   identityNumber?: string;
   @Column({ name: 'spp', nullable: true, length: 45 })
   spp?: string;
-  @Column({ name: 'userId', nullable: false })
-  userId: number;
   @OneToMany(() => Ticket, (ticket) => ticket.passenger)
   tickets: Ticket[];
+
+  @Column({ name: 'userId', nullable: true })
+  userId: number;
+  @ManyToOne(() => User, (user) => user.passengers)
+  user: User;
 }

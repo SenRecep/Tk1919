@@ -21,7 +21,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       migrationsTableName: 'typeorm_migrations',
       logger: 'file',
       ssl: { rejectUnauthorized: false },
-      synchronize: true, //! never use TRUE in production!
+      synchronize: this.config.get<string>('NODE_ENV') === 'development', //! never use TRUE in production!
     };
   }
 }

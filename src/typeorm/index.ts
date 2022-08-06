@@ -1,12 +1,15 @@
+import { AirFlight } from './AirFlight.entity';
+import { Passenger } from './Passenger.entity';
+import { Ticket } from './Ticket.entity';
 import { User } from './User.entity';
 import { SessionEntity } from './Session.entity';
-import { Post } from './Post.entity';
-import { Address } from './Address.entity';
+
+export { AirFlight };
+export { Passenger };
+export { Ticket };
 export { User };
 export { SessionEntity };
-export { Post };
-export { Address };
 
-const entities = [User, SessionEntity, Post, Address];
+const entities = [AirFlight, Passenger, Ticket, User, SessionEntity];
 
 export default entities;
