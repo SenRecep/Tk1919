@@ -18,7 +18,7 @@ export class PassengersService {
     });
   }
   getAllAsync(): Promise<Passenger[]> {
-    return this.passengersRepository.find({ relations: ['address'] });
+    return this.passengersRepository.find({ relations: ['tickets'] });
   }
   getAllWhitoutDeleted(userId: number): Promise<Passenger[]> {
     return this.passengersRepository.find({

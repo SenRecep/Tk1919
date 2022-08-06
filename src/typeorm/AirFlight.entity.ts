@@ -18,7 +18,7 @@ export class AirFlight extends EntityBase {
   passengerCount: number;
   @Column({ type: 'int', name: 'capacity ', nullable: false })
   capacity: number;
-  @Column({ name: 'duration ', nullable: false })
+  @Column({ name: 'duration ', nullable: false, length: 45 })
   duration: string;
   @OneToMany(() => Ticket, (ticket) => ticket.airFlight)
   tickets: Ticket[];
