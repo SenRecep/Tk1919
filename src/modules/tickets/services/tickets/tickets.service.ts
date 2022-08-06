@@ -61,6 +61,7 @@ export class TicketsService {
       ticketUpdateDto.passengerId,
       ticketUpdateDto.airFlightId,
       ticketUpdateDto.seatNumber,
+      ticketUpdateDto.pnr,
     );
     await this.ticketsRepository.update({ id }, { ...found });
     return found;
@@ -71,6 +72,7 @@ export class TicketsService {
       ticketCreateDto.passengerId,
       ticketCreateDto.airFlightId,
       ticketCreateDto.seatNumber,
+      ticketCreateDto.pnr,
     );
     const ticket = this.ticketsRepository.create(ticketCreateDto);
     return await this.ticketsRepository.save(ticket);
@@ -80,6 +82,7 @@ export class TicketsService {
     passengerId: number,
     airFlightId: number,
     seatNumber: string,
+    pnr: string,
   ) {
     const passenger = await this.passengerValidationAsync(passengerId);
     const airFlight = await this.airFlightValidationAsync(airFlightId);
@@ -95,6 +98,9 @@ export class TicketsService {
     );
     if (foundSeatNumber && foundSeatNumber.isDeleted === false)
       throw new BadRequestException('Seat number already taken');
+    const foundPnr = airFlight.tickets.find((x) => x.pnr === pnr);
+    if (foundPnr && foundPnr.isDeleted === false)
+      throw new BadRequestException('PNR already taken');
   }
 
   async passengerValidationAsync(passengerId: number) {
@@ -109,7 +115,7 @@ export class TicketsService {
       where: { id: airFlightId, isDeleted: false },
       relations: ['tickets'],
     });
-    if (!airFlight) throw new NotFoundException('AirFlight not found');
+    if (!airFlight) throw new NotFoundException('Air Flight not found');
     return airFlight;
   }
 }
