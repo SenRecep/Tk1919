@@ -38,7 +38,7 @@ export class Passenger extends EntityBase {
   @OneToMany(() => Ticket, (ticket) => ticket.passenger)
   tickets: Ticket[];
 
-  @Column({ name: 'userId', nullable: true })
+  @Column({ name: 'userId', nullable: false })
   userId: number;
   @ManyToOne(() => User, (user) => user.passengers)
   user: User;

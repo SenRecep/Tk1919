@@ -38,7 +38,11 @@ export class Ticket extends EntityBase {
   @ManyToOne(() => Passenger)
   @JoinColumn()
   passenger: Passenger;
+  @Column({ name: 'passengerId', nullable: false })
+  passengerId: number;
   @ManyToOne(() => AirFlight)
   @JoinColumn()
   airFlight: AirFlight;
+  @Column({ name: 'airFlightId', nullable: false })
+  airFlightId: number;
 }

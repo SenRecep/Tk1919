@@ -14,8 +14,6 @@ export class AirFlight extends EntityBase {
   to: string;
   @Column({ type: 'money', name: 'price', nullable: false })
   price: number;
-  @Column({ type: 'int', name: 'passengerCount', nullable: true, default: 0 })
-  passengerCount: number;
   @Column({ type: 'int', name: 'capacity ', nullable: false })
   capacity: number;
   @Column({ name: 'duration ', nullable: false, length: 45 })
