@@ -30,8 +30,9 @@ export class PassengersController {
   ) {}
 
   @Get()
-  getAll() {
-    return this.passengersService.getAllWhitoutDeleted();
+  getAll(@Req() req: Request) {
+    const userId = req.user['id'];
+    return this.passengersService.getAllWhitoutDeleted(userId);
   }
 
   @Get(':id')

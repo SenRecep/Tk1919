@@ -20,9 +20,9 @@ export class PassengersService {
   getAllAsync(): Promise<Passenger[]> {
     return this.passengersRepository.find({ relations: ['address'] });
   }
-  getAllWhitoutDeleted(): Promise<Passenger[]> {
+  getAllWhitoutDeleted(userId: number): Promise<Passenger[]> {
     return this.passengersRepository.find({
-      where: { isDeleted: false },
+      where: { isDeleted: false, userId },
       relations: ['tickets'],
     });
   }
@@ -47,6 +47,7 @@ export class PassengersService {
         found[key] = passengerUpdateDto[key];
       }
     }
+    found.isDeleted = false;
     await this.passengersRepository.update({ id }, { ...found });
     return found;
   }
