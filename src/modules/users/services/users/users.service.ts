@@ -44,6 +44,8 @@ export class UsersService {
     });
     if (!found) throw new NotFoundException('User not found');
     console.log('found', found);
+    console.log('updateDto', updateDto);
+
     if (updateDto.email && updateDto.email !== found.email) {
       const isExist = await this.findByUserEmail(updateDto.email);
       if (isExist) throw new BadRequestException('Email already exist');
