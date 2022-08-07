@@ -9,7 +9,7 @@ export class ThyController {
   constructor(@Inject(ThyService) private readonly thyService: ThyService) {}
 
   @Get('ports')
-  async getPorts() {
-    return await this.thyService.getPorts();
+  getPorts() {
+    return this.thyService.getPorts();
   }
 }
