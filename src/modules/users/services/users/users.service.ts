@@ -43,6 +43,7 @@ export class UsersService {
       where: { id },
     });
     if (!found) throw new NotFoundException('User not found');
+    console.log('found', found);
     if (updateDto.email && updateDto.email !== found.email) {
       const isExist = await this.findByUserEmail(updateDto.email);
       if (isExist) throw new BadRequestException('Email already exist');
@@ -54,6 +55,7 @@ export class UsersService {
 
     found.isDeleted = false;
     await this.repository.update({ id }, { ...found });
+    console.log('updated', found);
     return found;
   }
 }
