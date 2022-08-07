@@ -12,6 +12,7 @@ import { DataSource } from 'typeorm';
 import { TicketsModule } from './modules/tickets/tickets.module';
 import { AirFlightsModule } from './modules/air-flights/air-flights.module';
 import { PassengersModule } from './modules/passengers/passengers.module';
+import { ThyModule } from './modules/thy/thy.module';
 
 const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
 
@@ -28,6 +29,7 @@ const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
     TicketsModule,
     AirFlightsModule,
     PassengersModule,
+    ThyModule,
   ],
   controllers: [],
   providers: [

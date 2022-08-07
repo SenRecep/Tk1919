@@ -1,10 +1,16 @@
 import { HttpModule } from '@nestjs/axios';
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
+import { ThyHttpModuleService } from 'src/shared/httpModule/thyHttpModule.service';
 import { ThyController } from './controllers/thy/thy.controller';
 import { ThyService } from './services/thy/thy.service';
 
 @Module({
-  imports: [HttpModule],
+  imports: [
+    HttpModule.registerAsync({
+      useClass: ThyHttpModuleService,
+    }),
+    CacheModule.register(),
+  ],
   controllers: [ThyController],
   providers: [ThyService],
 })
