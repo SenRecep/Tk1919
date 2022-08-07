@@ -43,21 +43,20 @@ export class UsersService {
       where: { id },
     });
     if (!found) throw new NotFoundException('User not found');
-    console.log('found', found);
-    console.log('updateDto', updateDto);
 
     if (updateDto.email && updateDto.email !== found.email) {
       const isExist = await this.findByUserEmail(updateDto.email);
       if (isExist) throw new BadRequestException('Email already exist');
       found.email = updateDto.email;
     }
-    if (updateDto.password) found.password = encodePassword(updateDto.password);
+    if (updateDto.password && updateDto.password.length > 0)
+      found.password = encodePassword(updateDto.password);
+
     if (updateDto.firstName) found.firstName = updateDto.firstName;
     if (updateDto.lastName) found.lastName = updateDto.lastName;
 
     found.isDeleted = false;
     await this.repository.update({ id }, { ...found });
-    console.log('updated', found);
     return found;
   }
 }
