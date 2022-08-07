@@ -8,8 +8,8 @@ import { ThyService } from '../../services/thy/thy.service';
 export class ThyController {
   constructor(@Inject(ThyService) private readonly thyService: ThyService) {}
 
-  @Get()
-  async getPosts() {
+  @Get('ports')
+  async getPorts() {
     return await this.thyService.getPorts();
   }
 }
