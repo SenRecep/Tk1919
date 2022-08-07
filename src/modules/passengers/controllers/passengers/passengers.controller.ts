@@ -48,6 +48,7 @@ export class PassengersController {
     return this.passengersService.deleteAsync(id);
   }
   @Put(':id')
+  @ApiBody({ type: PassengerUpdateDto })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() passengerUpdateDto: PassengerUpdateDto,

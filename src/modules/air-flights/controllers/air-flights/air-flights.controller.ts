@@ -45,6 +45,7 @@ export class AirFlightsController {
     return this.airFlightsService.deleteAsync(id);
   }
   @Put(':id')
+  @ApiBody({ type: AirFlightUpdateDto })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() airFlightUpdateDto: AirFlightUpdateDto,

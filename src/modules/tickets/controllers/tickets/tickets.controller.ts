@@ -45,6 +45,7 @@ export class TicketsController {
     return this.ticketsService.deleteAsync(id);
   }
   @Put(':id')
+  @ApiBody({ type: TicketUpdateDto })
   @UseFilters(HttpExceptionFilter)
   update(
     @Param('id', ParseIntPipe) id: number,

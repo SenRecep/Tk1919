@@ -8,6 +8,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   UseFilters,
   UseInterceptors,
   UsePipes,
@@ -17,6 +18,7 @@ import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { HttpExceptionFilter } from 'src/filters/HttpException.filter';
 import { Public } from 'src/modules/auth/guards/Public.guard';
 import { CreateUserDto } from '../../dto/CreateUser.dto';
+import { UpdateUserDto } from '../../dto/UpdateUser.dto';
 import { UsersService } from '../../services/users/users.service';
 
 @ApiTags('users')
@@ -49,5 +51,16 @@ export class UsersController {
   @UsePipes(ValidationPipe)
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);
+  }
+
+  @ApiBearerAuth()
+  @ApiBody({ type: UpdateUserDto })
+  @Put(':id')
+  @UseFilters(HttpExceptionFilter)
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateDto: UpdateUserDto,
+  ) {
+    return this.userService.updateAsync(id, updateDto);
   }
 }
