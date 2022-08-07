@@ -22,16 +22,9 @@ export class ThyController {
     return this.thyService.getPorts();
   }
   @ApiBody({ type: SearchFlightByDateDto })
-  @Post()
+  @Post('searchFlightByDate')
   @UsePipes(ValidationPipe)
   searchFlightByDate(@Body() data: SearchFlightByDateDto) {
-    let count = 0;
-    while (count < 10) {
-      try {
-        return this.thyService.searchFlightByDate(data);
-      } catch (error) {
-        count++;
-      }
-    }
+    return this.thyService.searchFlightByDate(data);
   }
 }

@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Cache } from 'cache-manager';
-import { map } from 'rxjs';
+import { map, Observable, observable } from 'rxjs';
 import { stringToDate, timeDiffCalc } from 'src/utils/datetimeHelper';
 import { priceCalculator } from 'src/utils/priceCalculator';
 import { SearchFlightByDateDto } from '../../dtos/SearchFlightByDate.dto';
@@ -55,43 +55,54 @@ export class ThyService {
         }),
       );
   }
-  searchFlightByDate(data: SearchFlightByDateDto) {
-    return this.httpService
-      .post('/aodb-rest/searchFlightByDate', data)
-      .pipe(map((res) => res.data))
-      .pipe(map((res) => res.data))
-      .pipe(
-        map((res) => {
-          if (Array.isArray(res)) return res;
-          throw new Error('No data found');
-        }),
-      )
-      .pipe(
-        map((res) =>
-          res.map((x) => {
-            const scheduledLocalArrivalDatetime = stringToDate(
-              x.scheduledLocalArrivalDatetime,
-            );
-            const scheduledLocalDepartureDatetime = stringToDate(
-              x.scheduledLocalDepartureDatetime,
-            );
-            return {
-              price: priceCalculator(
-                scheduledLocalArrivalDatetime,
-                scheduledLocalDepartureDatetime,
-              ),
-              flightTime: timeDiffCalc(
-                scheduledLocalArrivalDatetime,
-                scheduledLocalDepartureDatetime,
-              ),
-              scheduledDepartureAirport: x.scheduledDepartureAirport,
-              scheduledArrivalAirport: x.scheduledArrivalAirport,
-              scheduledLocalArrivalDatetime: x.scheduledLocalArrivalDatetime,
-              scheduledLocalDepartureDatetime:
-                x.scheduledLocalDepartureDatetime,
-            };
-          }),
-        ),
-      );
+
+  async searchFlightByDate(data: SearchFlightByDateDto) {
+    let count = 0;
+    while (count < 10) {
+      try {
+        const response = await this.httpService
+          .post('/aodb-rest/searchFlightByDate', data)
+          .pipe(map((res) => res.data))
+          .pipe(map((res) => res.data))
+          .pipe(
+            map((res) => {
+              if (Array.isArray(res)) return res;
+              return [];
+            }),
+          )
+          .pipe(
+            map((res) =>
+              res.map((x) => {
+                const scheduledLocalArrivalDatetime = stringToDate(
+                  x.scheduledLocalArrivalDatetime,
+                );
+                const scheduledLocalDepartureDatetime = stringToDate(
+                  x.scheduledLocalDepartureDatetime,
+                );
+                return {
+                  price: priceCalculator(
+                    scheduledLocalArrivalDatetime,
+                    scheduledLocalDepartureDatetime,
+                  ),
+                  flightTime: timeDiffCalc(
+                    scheduledLocalArrivalDatetime,
+                    scheduledLocalDepartureDatetime,
+                  ),
+                  scheduledDepartureAirport: x.scheduledDepartureAirport,
+                  scheduledArrivalAirport: x.scheduledArrivalAirport,
+                  scheduledLocalArrivalDatetime:
+                    x.scheduledLocalArrivalDatetime,
+                  scheduledLocalDepartureDatetime:
+                    x.scheduledLocalDepartureDatetime,
+                };
+              }),
+            ),
+          )
+          .toPromise();
+        if (Array.isArray(response) && response.length > 0) return response;
+      } catch (error) {
+        count++;
+      }
+    }
   }
 }
